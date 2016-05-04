@@ -2,7 +2,7 @@ PATH
   remote: .
   specs:
     unobtainium-multifind (0.1.0)
-      unobtainium (~> 0.4)
+      unobtainium (~> 0.5)
 
 GEM
   remote: https://rubygems.org/
@@ -54,7 +54,7 @@ GEM
     simplecov-html (0.10.0)
     sys-proctable (1.0.0)
     unicode-display_width (1.0.5)
-    unobtainium (0.4.0)
+    unobtainium (0.5.0)
       sys-proctable (~> 1.0)
     websocket (1.2.3)
     yard (0.8.7.6)

@@ -50,7 +50,7 @@ Gem::Specification.new do |spec|
   spec.add_development_dependency "selenium-webdriver"
   spec.add_development_dependency "phantomjs"
 
-  spec.add_dependency "unobtainium", "~> 0.4"
+  spec.add_dependency "unobtainium", "~> 0.5"
 end
 # rubocop:enable Style/SpaceAroundOperators
 # rubocop:enable Style/UnneededPercentQ, Style/ExtraSpacing
