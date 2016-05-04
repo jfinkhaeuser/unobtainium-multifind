@@ -37,3 +37,6 @@ build/
 
 # Editor files
 .*.sw*
+
+# Firefox driver
+C:\\nppdf32Log\\debuglog.txt
