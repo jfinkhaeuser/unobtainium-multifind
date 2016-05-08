@@ -48,6 +48,13 @@ module Unobtainium
       attr_accessor :multifind_options
       @multifind_options = DEFAULT_OPTIONS
 
+      ##
+      # Find multiple elements. Each argument is a Hash of selector options
+      # that are passed to #find_element. If one argument contains keys from
+      # the DEFAULT_OPTIONS Hash, it is instead treated as an options Hash for
+      # the #multifind method.
+      # @return Array of found elements or nil entries if no matching element
+      #   was found.
       def multifind(*args)
         # Parse options
         options, selectors = multifind_parse_options(*args)
