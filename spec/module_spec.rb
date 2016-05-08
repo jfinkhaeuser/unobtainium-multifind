@@ -148,6 +148,16 @@ describe 'Unobtainium::MultiFind::DriverModule' do
       expect(elem).to be_empty
     end
 
+    it "does not find hidden elements" do
+      drv = @tester.driver(DRIVER)
+      drv.navigate.to(TEST_URL)
+
+      elem = drv.find(xpath: '//foo/hidden')
+      expect(elem).not_to be_nil
+      expect(elem).not_to be_empty
+      expect(elem[0]).to be_nil
+    end
+
     it "passes non-hash arguments without touching them" do
       drv = @tester.driver(DRIVER)
       drv.navigate.to(TEST_URL)
