@@ -32,6 +32,10 @@ module Unobtainium
         # If :last is specified, the last non-error result is
         #   returned.
         find: :all,
+        # Defaults to only finding :displayed? elements. You can use any method
+        # that Selenium::WebDriver::Element responds to, or :exists? if you only
+        # care whether the element exists.
+        check_element: :displayed?,
       }.freeze
 
       class << self
@@ -125,6 +129,15 @@ module Unobtainium
             ":last, but is: #{options[:find]}"
         end
 
+        # Ensure that 'check_element' contains only valid options.
+        elem_klass = ::Selenium::WebDriver::Element
+        if options[:check_element] != :exists? and
+           not elem_klass.instance_methods.include?(options[:check_element])
+          raise ArgumentError, ":check_element must either be :exists? or "\
+            "a boolean method that ::Selenium::WebDriver::Element responds to, "\
+            "but got: #{options[:check_element]}"
+        end
+
         return options, selectors
       end
 
@@ -132,6 +145,40 @@ module Unobtainium
       # Filters results from multifind; this largely means honouring the
       # :find option.
       def multifind_filter_results(options, results)
+        results = multifind_collapse_results(options, results)
+
+        # If we're only checking for existence, we're done here.
+        if options[:check_element] == :exists?
+          return results
+        end
+
+        # Filter all results according to the :check_element option
+        filtered = []
+        results.each do |result|
+          if result.nil?
+            filtered << result
+            next
+          end
+          if result.is_a?(::Selenium::WebDriver::Error::NoSuchElementError)
+            filtered << result
+            next
+          end
+
+          # Run check_element
+          if result.send(options[:check_element])
+            filtered << result
+            next
+          end
+
+          filtered << nil
+        end
+
+        return filtered
+      end
+
+      ##
+      # Collapses results to only return what's specified by :find.
+      def multifind_collapse_results(options, results)
         # That was easy!
         if options[:find] == :all
           return results

@@ -148,7 +148,7 @@ describe 'Unobtainium::MultiFind::DriverModule' do
       expect(elem).to be_empty
     end
 
-    it "does not find hidden elements" do
+    it "does not find hidden elements by default" do
       drv = @tester.driver(DRIVER)
       drv.navigate.to(TEST_URL)
 
@@ -156,6 +156,19 @@ describe 'Unobtainium::MultiFind::DriverModule' do
       expect(elem).not_to be_nil
       expect(elem).not_to be_empty
       expect(elem[0]).to be_nil
+    end
+
+    it "finds hidden element with :exists?" do
+      drv = @tester.driver(DRIVER)
+      drv.navigate.to(TEST_URL)
+
+      # rubocop:disable Style/BracesAroundHashParameters
+      elem = drv.find({ xpath: '//hidden' },
+                      { check_element: :exists? })
+      # rubocop:enable Style/BracesAroundHashParameters
+      expect(elem).not_to be_nil
+      expect(elem).not_to be_empty
+      expect(elem[0]).not_to be_nil
     end
 
     it "passes non-hash arguments without touching them" do
@@ -218,6 +231,23 @@ describe 'Unobtainium::MultiFind::DriverModule' do
 
       # Bad option
       drv.multifind_options = { find: :bad }
+      expect do
+        drv.find(xpath: '//foo')
+      end.to raise_error
+    end
+
+    it "validates :check_element" do
+      drv = @tester.driver(DRIVER)
+      drv.navigate.to(TEST_URL)
+
+      # Good option
+      drv.multifind_options = { check_element: :exists? }
+      expect do
+        drv.find(xpath: '//foo')
+      end.not_to raise_error
+
+      # Bad option
+      drv.multifind_options = { check_element: :foobar }
       expect do
         drv.find(xpath: '//foo')
       end.to raise_error
