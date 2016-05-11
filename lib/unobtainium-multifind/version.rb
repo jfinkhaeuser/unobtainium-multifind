@@ -9,6 +9,6 @@
 module Unobtainium
   module MultiFind
     # The current release version
-    VERSION = "0.2.0".freeze
+    VERSION = "0.3.0".freeze
   end # module MultiFind
 end # module Unobtainium
