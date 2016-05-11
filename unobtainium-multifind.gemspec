@@ -42,7 +42,7 @@ Gem::Specification.new do |spec|
   spec.requirements  = "Unobtainium driver implementing the Selenium API"
 
   spec.add_development_dependency "bundler", "~> 1.12"
-  spec.add_development_dependency "rubocop", "~> 0.39"
+  spec.add_development_dependency "rubocop", "~> 0.40"
   spec.add_development_dependency "rake", "~> 11.1"
   spec.add_development_dependency "rspec", "~> 3.4"
   spec.add_development_dependency "simplecov", "~> 0.11"
