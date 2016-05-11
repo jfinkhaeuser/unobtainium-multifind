@@ -221,4 +221,5 @@ end # module Unobtainium
 
 ::Unobtainium::Driver.register_module(
     ::Unobtainium::MultiFind::DriverModule,
-    __FILE__)
+    __FILE__
+)
