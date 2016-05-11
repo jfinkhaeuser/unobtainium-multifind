@@ -38,6 +38,10 @@ describe 'Unobtainium::MultiFind::DriverModule' do
   end
 
   describe "find functionality" do
+    before do
+      require 'unobtainium-multifind'
+    end
+
     it "can find a single element" do
       drv = @tester.driver(DRIVER)
       drv.navigate.to(TEST_URL)
@@ -181,6 +185,10 @@ describe 'Unobtainium::MultiFind::DriverModule' do
   end
 
   describe "find options" do
+    before do
+      require 'unobtainium-multifind'
+    end
+
     it "can throw on errors" do
       drv = @tester.driver(DRIVER)
       drv.navigate.to(TEST_URL)
@@ -250,6 +258,51 @@ describe 'Unobtainium::MultiFind::DriverModule' do
       drv.multifind_options = { check_element: :foobar }
       expect do
         drv.find(xpath: '//foo')
+      end.to raise_error
+    end
+
+    it "can override the find method with :find_elements" do
+      drv = @tester.driver(DRIVER)
+      drv.navigate.to(TEST_URL)
+
+      drv.multifind_options = { find_method: :find_elements }
+
+      elem = drv.find(xpath: '//foo/bar')
+      expect(elem).not_to be_nil
+      expect(elem).not_to be_empty
+      expect(elem.length).to eql 1
+      expect(elem[0]).not_to be_nil
+
+      expect(elem[0].is_a?(Array)).to be_truthy
+      expect(elem[0].length).to eql 1
+      expect(elem[0][0]).not_to be_nil
+    end
+
+    it "treats hidden elements well with :find_elements" do
+      drv = @tester.driver(DRIVER)
+      drv.navigate.to(TEST_URL)
+
+      drv.multifind_options = { find_method: :find_elements }
+
+      elem = drv.find(xpath: '//foo/hidden')
+      expect(elem).not_to be_nil
+      expect(elem).not_to be_empty
+      expect(elem.length).to eql 1
+      expect(elem[0]).not_to be_nil
+
+      expect(elem[0].is_a?(Array)).to be_truthy
+      expect(elem[0].length).to eql 1
+      expect(elem[0][0]).to be_nil
+    end
+
+    it "raises errors when the find method is invalid" do
+      drv = @tester.driver(DRIVER)
+      drv.navigate.to(TEST_URL)
+
+      drv.multifind_options = { find_method: :does_not_exist }
+
+      expect do
+        drv.find(xpath: '//foo/bar')
       end.to raise_error
     end
   end

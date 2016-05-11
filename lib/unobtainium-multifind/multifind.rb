@@ -36,6 +36,10 @@ module Unobtainium
         # that Selenium::WebDriver::Element responds to, or :exists? if you only
         # care whether the element exists.
         check_element: :displayed?,
+        # The default method to perform the actual find is :find_element, but
+        # you can override this here. The most sensible case would be to use
+        # :find_elements instead, of course.
+        find_method: :find_element,
       }.freeze
 
       class << self
@@ -54,9 +58,9 @@ module Unobtainium
 
       ##
       # Find multiple elements. Each argument is a Hash of selector options
-      # that are passed to #find_element. If one argument contains keys from
-      # the DEFAULT_OPTIONS Hash, it is instead treated as an options Hash for
-      # the #multifind method.
+      # that are passed to options[:find_method]. If one argument contains keys
+      # from the DEFAULT_OPTIONS Hash, it is instead treated as an options Hash
+      # for the #multifind method.
       # @return Array of found elements or nil entries if no matching element
       #   was found.
       def multifind(*args)
@@ -67,7 +71,7 @@ module Unobtainium
         results = []
         selectors.each do |selector|
           begin
-            results << find_element(selector)
+            results << send(options[:find_method], selector)
           rescue ::Selenium::WebDriver::Error::NoSuchElementError => err
             if options[:raise_on_error]
               raise
@@ -153,24 +157,13 @@ module Unobtainium
         end
 
         # Filter all results according to the :check_element option
-        filtered = []
-        results.each do |result|
-          if result.nil?
-            filtered << result
-            next
+        filtered = results.map do |result|
+          if result.is_a? Array
+            next result.map do |inner|
+              next apply_filter(inner, options)
+            end
           end
-          if result.is_a?(::Selenium::WebDriver::Error::NoSuchElementError)
-            filtered << result
-            next
-          end
-
-          # Run check_element
-          if result.send(options[:check_element])
-            filtered << result
-            next
-          end
-
-          filtered << nil
+          next apply_filter(result, options)
         end
 
         return filtered
@@ -204,6 +197,23 @@ module Unobtainium
         # If we're here then we have no results, but want :first
         # or :last. An empty result is appropriate.
         return []
+      end
+
+      ##
+      # Applies the :check_element filter
+      def apply_filter(elem, options)
+        if elem.nil?
+          return elem
+        end
+
+        if elem.is_a?(::Selenium::WebDriver::Error::NoSuchElementError)
+          return elem
+        end
+
+        if elem.send(options[:check_element])
+          return elem
+        end
+        return nil
       end
     end # module DriverModule
   end # module MultiFind
