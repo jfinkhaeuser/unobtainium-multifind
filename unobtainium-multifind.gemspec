@@ -41,16 +41,15 @@ Gem::Specification.new do |spec|
 
   spec.requirements  = "Unobtainium driver implementing the Selenium API"
 
-  spec.add_development_dependency "bundler", "~> 1.12"
-  spec.add_development_dependency "rubocop", "~> 0.40"
-  spec.add_development_dependency "rake", "~> 11.1"
-  spec.add_development_dependency "rspec", "~> 3.4"
-  spec.add_development_dependency "simplecov", "~> 0.11"
-  spec.add_development_dependency "yard", "~> 0.8"
+  spec.add_development_dependency "bundler", "~> 1.16"
+  spec.add_development_dependency "rake", "~> 11.3"
+  spec.add_development_dependency "rspec", "~> 3.7"
+  spec.add_development_dependency "simplecov", "~> 0.16"
+  spec.add_development_dependency "yard", "~> 0.9", ">= 0.9.12"
   spec.add_development_dependency "selenium-webdriver"
   spec.add_development_dependency "phantomjs"
 
-  spec.add_dependency "unobtainium", "~> 0.5"
+  spec.add_dependency "unobtainium", "~> 0.13"
 end
 # rubocop:enable Style/SpaceAroundOperators
 # rubocop:enable Style/UnneededPercentQ, Style/ExtraSpacing

@@ -1,8 +1,8 @@
 language: ruby
 rvm:
-  - 2.0
-  - 2.1
   - 2.2
-addons:
-  code_climate:
-    repo_token: 89d15fbb64d0d6ed4ecc68d5fe9482efdccd047eb5a6b0266434d683115b848c
+  - 2.3
+  - 2.4
+    #  - 2.5
+script:
+  - bundle exec rake
