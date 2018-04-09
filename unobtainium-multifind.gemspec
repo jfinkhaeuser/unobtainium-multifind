@@ -3,7 +3,7 @@
 # unobtainium-multifind
 # https://github.com/jfinkhaeuser/unobtainium-multifind
 #
-# Copyright (c) 2016 Jens Finkhaeuser and other unobtainium-multifind contributors.
+# Copyright (c) 2016-2018 Jens Finkhaeuser and other unobtainium-multifind contributors.
 # All rights reserved.
 #
 

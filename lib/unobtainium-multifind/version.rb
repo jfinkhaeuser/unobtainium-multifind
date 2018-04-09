@@ -3,12 +3,12 @@
 # unobtainium-multifind
 # https://github.com/jfinkhaeuser/unobtainium-multifind
 #
-# Copyright (c) 2016 Jens Finkhaeuser and other unobtainium-multifind contributors.
+# Copyright (c) 2016-2018 Jens Finkhaeuser and other unobtainium-multifind contributors.
 # All rights reserved.
 #
 module Unobtainium
   module MultiFind
     # The current release version
-    VERSION = "0.3.0".freeze
+    VERSION = "0.4.0".freeze
   end # module MultiFind
 end # module Unobtainium
